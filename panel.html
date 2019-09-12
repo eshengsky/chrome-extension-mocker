@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>AxiosMocker</title>
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./static/css/switchery.min.css" />
+    <link rel="stylesheet" href="./static/css/fuelux.min.css" />
+    <link rel="stylesheet" href="./static/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="./monaco-editor/vs/editor/editor.main.css" />
+    <link rel="stylesheet" href="./static/css/iconfont.css" />
+    <link rel="stylesheet" href="./static/css/panel.css" />
+  </head>
+
+  <body class="fuelux">
+    <div class="list-panel">
+      <header class="list-header">
+        <div class="header-badge">
+          <i class="iconfont iconm"></i> <span>Axios Mocker</span>
+        </div>
+        <div class="header-btns">
+          <a class="btn btn-primary" id="btn-new">
+            <i class="iconfont iconadd2"></i> <span>新建</span>
+          </a>
+          <div class="btn btn-default btn-upload">
+            <div><i class="iconfont iconimport2"></i> <span>导入</span></div>
+            <input
+              class="btn btn-default"
+              id="btn-import"
+              type="file"
+              accept=".json"
+            />
+          </div>
+          <a class="btn btn-default" id="btn-export">
+            <i class="iconfont iconexport"></i> <span>导出</span>
+          </a>
+          <a class="btn btn-danger" id="btn-clear">
+            <i class="iconfont icondelete"></i> <span>清空</span>
+          </a>
+        </div>
+      </header>
+      <ul id="data"></ul>
+      <footer>
+        <div class="footer-left">
+          <a
+            href="https://github.com/eshengsky/axios-mocker"
+            target="_blank"
+            title="code"
+          >
+            <i class="iconfont iconcode"></i>
+          </a>
+          <span>with</span>
+          <i class="iconfont iconlove" title="love"></i>
+          <span>by</span>
+          <a href="https://github.com/eshengsky" target="_blank">Sky</a>
+        </div>
+      </footer>
+    </div>
+    <div class="edit-panel">
+      <header class="edit-header">
+        <div class="btn-back">
+          <i class="fas fa-chevron-left"></i> <span>返回</span>
+        </div>
+      </header>
+      <div class="panel req-panel">
+        <p class="split-title" locale="match_req">匹配请求</p>
+        <div class="panel-body">
+          <div class="form-group" id="form-uri">
+            <label for="text-uri" locale="req_url">请求链接</label>
+            <input class="form-control" placeholder="模糊匹配" id="text-uri" />
+          </div>
+          <div class="form-group">
+            <label locale="req_method">请求方式</label>
+            <div class="input-group">
+              <div
+                class="btn-group selectlist"
+                data-resize="auto"
+                data-initialize="selectlist"
+                id="select-method"
+              >
+                <button
+                  class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown"
+                  type="button"
+                >
+                  <span class="selected-label">&nbsp;</span>
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li data-value="">
+                    <a href="#" locale="all">不限</a>
+                  </li>
+                  <li data-value="GET">
+                    <a href="#">GET</a>
+                  </li>
+                  <li data-value="DELETE">
+                    <a href="#">DELETE</a>
+                  </li>
+                  <li data-value="HEAD">
+                    <a href="#">HEAD</a>
+                  </li>
+                  <li data-value="OPTIONS">
+                    <a href="#">OPTIONS</a>
+                  </li>
+                  <li data-value="POST">
+                    <a href="#">POST</a>
+                  </li>
+                  <li data-value="PUT">
+                    <a href="#">PUT</a>
+                  </li>
+                  <li data-value="PATCH">
+                    <a href="#">PATCH</a>
+                  </li>
+                </ul>
+                <input
+                  class="hidden hidden-field"
+                  readonly="readonly"
+                  aria-hidden="true"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel res-panel">
+        <p class="split-title" locale="mock_res">模拟响应</p>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="text-status" locale="res_code">响应状态码</label>
+            <div
+              class="input-group input-append dropdown combobox"
+              data-initialize="combobox"
+              id="select-status"
+            >
+              <input type="number" class="form-control" id="text-status" />
+              <div class="input-group-btn">
+                <button
+                  type="button"
+                  class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li data-value="200" data-selected="true">
+                    <a href="#">200</a>
+                  </li>
+                  <li data-value="301">
+                    <a href="#">301</a>
+                  </li>
+                  <li data-value="302">
+                    <a href="#">302</a>
+                  </li>
+                  <li data-value="400">
+                    <a href="#">400</a>
+                  </li>
+                  <li data-value="401">
+                    <a href="#">401</a>
+                  </li>
+                  <li data-value="404">
+                    <a href="#">404</a>
+                  </li>
+                  <li data-value="500">
+                    <a href="#">500</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="text-mime" locale="res_mime">响应类型</label>
+            <div
+              class="input-group input-append dropdown combobox"
+              data-initialize="combobox"
+              id="select-mime"
+              style="width: 100%;"
+            >
+              <input type="text" class="form-control" id="text-mime" />
+              <div class="input-group-btn">
+                <button
+                  type="button"
+                  class="btn btn-default dropdown-toggle"
+                  data-toggle="dropdown"
+                >
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li data-value="application/json" data-selected="true">
+                    <a href="#">application/json</a>
+                  </li>
+                  <li data-value="text/html">
+                    <a href="#">text/html</a>
+                  </li>
+                  <li data-value="application/javascript">
+                    <a href="#">application/javascript</a>
+                  </li>
+                  <li data-value="text/css">
+                    <a href="#">text/css</a>
+                  </li>
+                  <li data-value="text/plain">
+                    <a href="#">text/plain</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="text-header" locale="res_headers">自定义响应头</label>
+            <textarea
+              class="form-control"
+              placeholder="key: value 格式，多个键值对用换行隔开"
+              rows="3"
+              id="text-header"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="text-body" locale="res_body">响应内容</label>
+            <div class="lang-mode-wrap">
+              <select class="form-control input-sm" id="select-mode">
+                <option value="json">JSON</option>
+                <option value="html">HTML</option>
+                <option value="javascript">JavaScript</option>
+                <option value="css">CSS</option>
+                <option value="plaintext" locale="plaintext">纯文本</option>
+              </select>
+              <p locale="lang_mode">语言模式：</p>
+            </div>
+            <div id="text-body"></div>
+          </div>
+          <div class="form-group">
+            <label for="text-delay" locale="res_delay">响应延迟</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="text-delay"
+                value="0"
+              />
+              <div class="input-group-addon">ms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="save-wrap">
+        <button class="btn btn-success btn-save" locale="save">
+          保存修改
+        </button>
+      </div>
+    </div>
+    <script type=""></script>
+    <script src="./static/js/jquery.min.js"></script>
+    <script src="./static/js/bootstrap.min.js"></script>
+    <script src="./static/js/switchery.min.js"></script>
+    <script src="./static/js/fuelux.min.js"></script>
+    <script src="./static/js/sweetalert2.all.min.js"></script>
+    <script src="./monaco-editor/vs/loader.js"></script>
+    <script src="./static/js/panel.js"></script>
+  </body>
+</html>

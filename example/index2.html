@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Axios Mocker Demo with local data</title>
+    <style>
+      body {
+        margin: 20px;
+      }
+      header {
+        font-size: 24px;
+        display: block;
+      }
+      .desc {
+        font-size: 14px;
+      }
+      .panel {
+        white-space: pre;
+        background: #efefef;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        word-break: break-all;
+        font-size: 14px;
+        height: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>Axios Mocker Demo with local data</header>
+      <a href="./index1.html">See demo with Chrome extension</a>
+      <p>Response Data:</p>
+      <div class="panel"></div>
+      <div class="desc">
+        <p>
+          This demo will request this Github api:
+          <a href="https://api.github.com/repos/eshengsky/axios-mocker"
+            >https://api.github.com/repos/eshengsky/axios-mocker</a
+          >
+        </p>
+        <p>
+          If not installed AxiosMocker extension, it will really request the api
+          and show response data above.
+        </p>
+        <p>If you want to mock the response, do as following:</p>
+        <ul></ul>
+      </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!--reference this script manually-->
+    <script src="../dist/axios-mocker.min.js"></script>
+    <script>
+      // you MUST delete this before commit your code
+      new AxiosMocker(axios, [
+        {
+          req: {
+            url: "/repos/eshengsky/axios-mocker",
+            method: "GET"
+          }, 
+          res: {
+            statusCode: 200,
+            headers: {
+              test: 123,
+              'foo-bar': 'baz'
+            },
+            contentType: 'application/json',
+            body: {
+              code: '1',
+              message: 'just test'
+            },
+            delay: 1000
+          },
+          active: true,
+          comments: 'This is my first mock data'
+        }
+      ]);
+
+      axios
+        .get(
+          "https://api.github.com/repos/eshengsky/axios-mocker?test1=1&test2=2",
+          {
+            params: { test3: 3, test2: "new" },
+            headers: {
+              "custom-header": "something"
+            }
+          }
+        )
+        .then(function(resp) {
+          let data = resp.data;
+          if (typeof resp.data === "object") {
+            data = JSON.stringify(resp.data, null, 4);
+          }
+          document.querySelector(".panel").innerHTML = data;
+        })
+        .catch(err => {
+          document.querySelector(".panel").innerHTML =
+            "Error response with status code " + err.response.status;
+        });
+    </script>
+  </body>
+</html>

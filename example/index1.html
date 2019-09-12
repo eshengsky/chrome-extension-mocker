@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Axios Mocker Demo with Chrome extension</title>
+    <style>
+      body {
+        margin: 20px;
+      }
+      header {
+        font-size: 24px;
+        display: block;
+      }
+      .desc {
+        font-size: 14px;
+      }
+      .panel {
+        white-space: pre;
+        background: #efefef;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        word-break: break-all;
+        font-size: 14px;
+        height: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>Axios Mocker Demo with Chrome extension</header>
+      <a href="./index2.html">See demo with local data</a>
+      <p>Response Data:</p>
+      <div class="panel"></div>
+      <div class="desc">
+        <p>
+          This demo will request this Github api:
+          <a href="https://api.github.com/repos/eshengsky/axios-mocker"
+            >https://api.github.com/repos/eshengsky/axios-mocker</a
+          >
+        </p>
+        <p>
+          If not installed AxiosMocker extension, it will really request the api
+          and show response data above.
+        </p>
+        <p>If you want to mock the response, do as following:</p>
+        <ul>
+          <li>
+            Add code after axios reference：
+            <pre><code>if (window.AxiosMocker) {
+  new AxiosMocker(axios);
+}</code></pre>
+          </li>
+          <li>
+            Install the buit-in Chrome extension AxiosMocker.
+          </li>
+          <li>
+            Open the Chrome dev tool panel (Ctrl+Shift+I), click the AxiosMocker
+            tab.
+          </li>
+          <li>
+            Click button New, type 'api.github.com/repos/eshengsky/axios-mocker'
+            in the request url input box, then press Ctrl+S to save.
+          </li>
+          <li>Refresh the page.</li>
+        </ul>
+      </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      // No need to delete this before commit your code
+      if (window.AxiosMockerExt) {
+        new AxiosMockerExt(axios);
+      }
+
+      axios
+        .get(
+          "https://api.github.com/repos/eshengsky/axios-mocker?test1=1&test2=2",
+          {
+            params: { test3: 3, test2: "new" },
+            headers: {
+              "custom-header": "something"
+            }
+          }
+        )
+        .then(function(resp) {
+          let data = resp.data;
+          if (typeof resp.data === "object") {
+            data = JSON.stringify(resp.data, null, 4);
+          }
+          document.querySelector(".panel").innerHTML = data;
+        })
+        .catch(err => {
+          document.querySelector(".panel").innerHTML =
+            "Error response with status code " + err.response.status;
+        });
+    </script>
+  </body>
+</html>
