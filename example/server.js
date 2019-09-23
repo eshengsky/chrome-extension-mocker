@@ -2,12 +2,9 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 http.createServer((req, res) => {
-    if (req.url === '/example/index1.html') {
+    if (req.url.startsWith('/example')) {
         res.setHeader('content-type', 'text/html; charset=utf-8');
-        fs.createReadStream(path.resolve(__dirname, './index1.html')).pipe(res);
-    } else if (req.url === '/example/index2.html') {
-        res.setHeader('content-type', 'text/html; charset=utf-8');
-        fs.createReadStream(path.resolve(__dirname, './index2.html')).pipe(res);
+        fs.createReadStream(path.resolve(__dirname, `..${req.url}`)).pipe(res);
     } else if (req.url.startsWith('/dist')) {
         res.setHeader('content-type', 'application/javascript; charset=utf-8');
         fs.createReadStream(path.resolve(__dirname, `..${req.url}`)).pipe(res);

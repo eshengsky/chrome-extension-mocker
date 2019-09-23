@@ -32,20 +32,6 @@
       <a href="./index1.html">See demo with Chrome extension</a>
       <p>Response Data:</p>
       <div class="panel"></div>
-      <div class="desc">
-        <p>
-          This demo will request this Github api:
-          <a href="https://api.github.com/repos/eshengsky/axios-mocker"
-            >https://api.github.com/repos/eshengsky/axios-mocker</a
-          >
-        </p>
-        <p>
-          If not installed AxiosMocker extension, it will really request the api
-          and show response data above.
-        </p>
-        <p>If you want to mock the response, do as following:</p>
-        <ul></ul>
-      </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -56,37 +42,32 @@
       new AxiosMocker(axios, [
         {
           req: {
-            url: "/repos/eshengsky/axios-mocker",
+            url: "/api/getUser",
             method: "GET"
-          }, 
+          },
           res: {
             statusCode: 200,
             headers: {
               test: 123,
-              'foo-bar': 'baz'
+              "foo-bar": "baz"
             },
-            contentType: 'application/json',
+            contentType: "application/json",
             body: {
-              code: '1',
-              message: 'just test'
+              code: "1",
+              data: ["Sky", "Jack", "Kathy"]
             },
             delay: 1000
-          },
-          active: true,
-          comments: 'This is my first mock data'
+          }
         }
       ]);
 
       axios
-        .get(
-          "https://api.github.com/repos/eshengsky/axios-mocker?test1=1&test2=2",
-          {
-            params: { test3: 3, test2: "new" },
-            headers: {
-              "custom-header": "something"
-            }
+        .get("/api/getUser", {
+          params: {},
+          headers: {
+            
           }
-        )
+        })
         .then(function(resp) {
           let data = resp.data;
           if (typeof resp.data === "object") {
@@ -94,7 +75,7 @@
           }
           document.querySelector(".panel").innerHTML = data;
         })
-        .catch(err => {
+        .catch(function(err) {
           document.querySelector(".panel").innerHTML =
             "Error response with status code " + err.response.status;
         });

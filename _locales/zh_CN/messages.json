@@ -1,0 +1,128 @@
+{
+    "New": {
+        "message": "新建"
+    },
+    "NewTitle": {
+        "message": "新建一条mock数据"
+    },
+    "Import": {
+        "message": "导入"
+    },
+    "ImportTitle": {
+        "message": "从json文件中导入mock数据"
+    },
+    "Export": {
+        "message": "导出"
+    },
+    "ExportTitle": {
+        "message": "导出mock数据到json文件"
+    },
+    "Clear": {
+        "message": "清空"
+    },
+    "ClearTitle": {
+        "message": "删除所有mock数据"
+    },
+    "CurrVersion": {
+        "message": "当前版本"
+    },
+    "Back": {
+        "message": "返回"
+    },
+    "MatchReq": {
+        "message": "匹配请求"
+    },
+    "ReqUrl": {
+        "message": "请求链接"
+    },
+    "UrlPhd": {
+        "message": "模糊匹配"
+    },
+    "ReqMethod": {
+        "message": "请求方式"
+    },
+    "All": {
+        "message": "--不限--"
+    },
+    "All2": {
+        "message": "不限"
+    },
+    "MockRes": {
+        "message": "模拟响应"
+    },
+    "ResStatus": {
+        "message": "响应状态码"
+    },
+    "ResMime": {
+        "message": "响应类型"
+    },
+    "ResHeaders": {
+        "message": "自定义响应头"
+    },
+    "HeadersPhd": {
+        "message": "key: value 格式，多个键值对用换行隔开"
+    },
+    "ResBody": {
+        "message": "响应内容"
+    },
+    "PlainText": {
+        "message": "纯文本"
+    },
+    "LanMode": {
+        "message": "语言模式："
+    },
+    "ResDelay": {
+        "message": "响应延迟"
+    },
+    "Save": {
+        "message": "保存修改"
+    },
+    "Saved": {
+        "message": "已保存"
+    },
+    "Active": {
+        "message": "启用"
+    },
+    "Delete": {
+        "message": "删除"
+    },
+    "DelTip": {
+        "message": "确认删除？"
+    },
+    "Confirm": {
+        "message": "确定"
+    },
+    "Cancel": {
+        "message": "取消"
+    },
+    "DelDone": {
+        "message": "删除成功！"
+    },
+    "ClearTip": {
+        "message": "确定要清空全部数据吗？"
+    },
+    "ClearDone": {
+        "message": "清空成功！"
+    },
+    "ImportTip": {
+        "message": "导入前会清空当前已有的数据！"
+    },
+    "Continue": {
+        "message": "继续"
+    },
+    "ArrayTip": {
+        "message": "导入的数据必须是数组类型！"
+    },
+    "FormatTip": {
+        "message": "导入的数据格式不正确！"
+    },
+    "ImportDone": {
+        "message": "导入成功！"
+    },
+    "UpdateInfo": {
+        "message": "没有更新"
+    },
+    "checkedNew": {
+        "message": "检测到新版本"
+    }
+}

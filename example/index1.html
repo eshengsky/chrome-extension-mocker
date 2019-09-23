@@ -33,22 +33,11 @@
       <p>Response Data:</p>
       <div class="panel"></div>
       <div class="desc">
-        <p>
-          This demo will request this Github api:
-          <a href="https://api.github.com/repos/eshengsky/axios-mocker"
-            >https://api.github.com/repos/eshengsky/axios-mocker</a
-          >
-        </p>
-        <p>
-          If not installed AxiosMocker extension, it will really request the api
-          and show response data above.
-        </p>
-        <p>If you want to mock the response, do as following:</p>
         <ul>
           <li>
             Add code after axios reference：
-            <pre><code>if (window.AxiosMocker) {
-  new AxiosMocker(axios);
+            <pre><code>if (window.AxiosMockerExt) {
+  new AxiosMockerExt(axios);
 }</code></pre>
           </li>
           <li>
@@ -59,7 +48,7 @@
             tab.
           </li>
           <li>
-            Click button New, type 'api.github.com/repos/eshengsky/axios-mocker'
+            Click button New, type '/api/getUser'
             in the request url input box, then press Ctrl+S to save.
           </li>
           <li>Refresh the page.</li>
@@ -75,11 +64,11 @@
 
       axios
         .get(
-          "https://api.github.com/repos/eshengsky/axios-mocker?test1=1&test2=2",
+          "/api/getUser",
           {
-            params: { test3: 3, test2: "new" },
+            params: {  },
             headers: {
-              "custom-header": "something"
+              // "custom-header": "something"
             }
           }
         )
@@ -90,7 +79,7 @@
           }
           document.querySelector(".panel").innerHTML = data;
         })
-        .catch(err => {
+        .catch(function(err) {
           document.querySelector(".panel").innerHTML =
             "Error response with status code " + err.response.status;
         });

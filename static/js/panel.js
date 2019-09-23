@@ -1,23 +1,20 @@
 require.config({ paths: { 'vs': './monaco-editor/vs' } });
-require.config({
-    'vs/nls': {
-        availableLanguages: {
-            '*': 'zh-cn'
+
+const isCHN = (navigator.language || '').toLowerCase() === 'zh-cn';
+if (isCHN) {
+    require.config({
+        'vs/nls': {
+            availableLanguages: {
+                '*': 'zh-cn'
+            }
         }
-    }
-});
+    });
+}
 
 class Mocker {
     constructor() {
-        this.$btnNew = $('#btn-new');
         this.$btnImport = $('#btn-import');
-        this.$btnExport = $('#btn-export');
-        this.$btnClear = $('#btn-clear');
-        this.$data = $('#data');
-        this.$listPanel = $('.list-panel');
-        this.$btnBack = $('.btn-back');
         this.$editPanel = $('.edit-panel');
-        this.$logUl = $('.log-panel ul');
         this.$textUri = $('#text-uri');
         this.$formUri = $('#form-uri');
         this.$selectMethod = $('#select-method');
@@ -29,16 +26,18 @@ class Mocker {
         this.$selectMode = $('#select-mode');
         this.$textDelay = $('#text-delay');
         this.$btnSave = $('.btn-save');
-        this.defaultEditorHeight = 150;
         this.uid = "";
         this.scrollTop = 0;
+        this.version = chrome.app.getDetails().version;
         this.init();
     }
 
     init() {
+        this.initUI();
         this.checkActive();
         this.initMockList();
         this.bindEvents();
+        this.checkUpdate();
     }
 
     checkActive() {
@@ -54,6 +53,23 @@ class Mocker {
 
     }
 
+    initUI() {
+        document.querySelectorAll('[data-content]').forEach(el => {
+            const msg = el.dataset.content;
+            el.textContent = chrome.i18n.getMessage(msg);
+        });
+        document.querySelectorAll('[data-title]').forEach(el => {
+            const msg = el.dataset.title;
+            el.setAttribute('title', chrome.i18n.getMessage(msg));
+        });
+        document.querySelectorAll('[data-placeholder]').forEach(el => {
+            const msg = el.dataset.placeholder;
+            el.setAttribute('placeholder', chrome.i18n.getMessage(msg));
+        });
+        $('#curr-version').html(`<a href="https://github.com/eshengsky/axios-mocker/releases/tag/v${this.version}" target="_blank">v${this.version}</a>`);
+        document.body.style.display = 'block';
+    }
+
     /**
      * 初始化列表
      */
@@ -67,7 +83,7 @@ class Mocker {
 <li class="data-li ${item.active === false ? 'inactive' : ''}">
     <div class="div-left" data-uid="${item.id}">
         <div class="div-top">
-            <span class="list-method ${item.req.method}" title="${!item.req.method ? '不限' : item.req.method}">${item.req.method ? item.req.method.toUpperCase() : 'All'}</span>
+            <span class="list-method ${item.req.method}" title="${!item.req.method ? chrome.i18n.getMessage('All2') : item.req.method}">${item.req.method ? item.req.method.toUpperCase() : 'All'}</span>
             <span title="${item.req.url}" class="list-uri">${item.req.url}</span>
         </div>
         <div class="div-bottom">
@@ -76,15 +92,13 @@ class Mocker {
         </div>
     </div>
     <div class="div-right">
-        <div>
-            <input data-uid="${item.id}" type="checkbox" class="cb-active" ${item.active !== false ? 'checked' : ''}>
-            <button class="btn-action btn-del" title="删除" data-uid="${item.id}"><i class="iconfont icondelete2"></i></button>
-        </div>
+        <div class="switcher-wrap" title="${chrome.i18n.getMessage('Active')}"><input data-uid="${item.id}" type="checkbox" class="cb-active" ${item.active !== false ? 'checked' : ''}></div>
+        <button class="btn-del" title="${chrome.i18n.getMessage('Delete')}" data-uid="${item.id}"><i class="far fa-times-circle"></i></button>
     </div>
 </li>
 `;
                 });
-                this.$data.html(html);
+                $('#data').html(html);
                 document.querySelectorAll('.cb-active').forEach(el => {
                     const switchery = new Switchery(el, {
                         color: '#56CC9D',
@@ -195,9 +209,9 @@ class Mocker {
                 data.unshift(entity);
             }
             chrome.storage.local.set({ data }, () => {
-                this.$btnSave.html(`<i class="fas fa-check"></i> 已保存`);
+                this.$btnSave.html(`<i class="fas fa-check"></i> ${chrome.i18n.getMessage('Saved')}`);
                 setTimeout(() => {
-                    this.$btnSave.html('保存修改');
+                    this.$btnSave.html(chrome.i18n.getMessage('Save'));
                 }, 1000);
 
                 // 如果保存成功，则对 id 重新赋值
@@ -276,11 +290,11 @@ class Mocker {
 
     deleteMockItem(uid) {
         swal({
-            text: '确认删除？',
+            text: chrome.i18n.getMessage('DelTip'),
             type: 'warning',
             showCancelButton: true,
-            cancelButtonText: '取消',
-            confirmButtonText: '确定'
+            cancelButtonText: chrome.i18n.getMessage('Cancel'),
+            confirmButtonText: chrome.i18n.getMessage('Confirm')
         }).then(result => {
             if (result.value) {
                 this.getSettings().then(data => {
@@ -290,7 +304,7 @@ class Mocker {
                         chrome.storage.local.set({ data }, () => {
                             this.initMockList();
                             swal({
-                                text: '删除成功！',
+                                text: chrome.i18n.getMessage('DelDone'),
                                 type: 'success',
                                 showConfirmButton: false,
                                 timer: 1200
@@ -319,7 +333,7 @@ class Mocker {
      * 绑定事件
      */
     bindEvents() {
-        this.$btnNew.on('click', () => {
+        $('#btn-new').on('click', () => {
             this.scrollTop = window.scrollY;
             this.$editPanel.css('left', '0');
             setTimeout(() => {
@@ -327,7 +341,7 @@ class Mocker {
             }, 500);
         });
 
-        this.$btnExport.on('click', () => {
+        $('#btn-export').on('click', () => {
             this.getSettings().then(data => {
                 this.exportData(data, 'axios_mocker_data');
             });
@@ -338,19 +352,19 @@ class Mocker {
             this.$btnImport.val('');
         });
 
-        this.$btnClear.on('click', () => {
+        $('#btn-clear').on('click', () => {
             swal({
-                text: '确定要清空全部数据吗？',
+                text: chrome.i18n.getMessage('ClearTip'),
                 type: 'warning',
                 showCancelButton: true,
-                cancelButtonText: '取消',
-                confirmButtonText: '确定'
+                cancelButtonText: chrome.i18n.getMessage('Cancel'),
+                confirmButtonText: chrome.i18n.getMessage('Confirm')
             }).then(result => {
                 if (result.value) {
                     chrome.storage.local.set({ data: [] }, () => {
                         this.initMockList();
                         swal({
-                            text: '清空成功！',
+                            text: chrome.i18n.getMessage('ClearDone'),
                             type: 'success',
                             showConfirmButton: false,
                             timer: 1200
@@ -362,11 +376,11 @@ class Mocker {
 
         this.$btnImport.on('change', () => {
             swal({
-                text: '导入前会清空当前已有的数据！',
+                text: chrome.i18n.getMessage('ImportTip'),
                 type: 'warning',
                 showCancelButton: true,
-                cancelButtonText: '取消',
-                confirmButtonText: '继续'
+                cancelButtonText: chrome.i18n.getMessage('Cancel'),
+                confirmButtonText: chrome.i18n.getMessage('Continue')
             }).then(result => {
                 if (result.value) {
                     const file = this.$btnImport[0].files[0];
@@ -378,7 +392,7 @@ class Mocker {
                             const data = JSON.parse(fileContent);
                             if (!Array.isArray(data)) {
                                 return swal({
-                                    text: '导入的数据必须是数组类型！',
+                                    text: chrome.i18n.getMessage('ArrayTip'),
                                     type: 'error'
                                 });
                             }
@@ -389,7 +403,7 @@ class Mocker {
                                 return false;
                             })) {
                                 return swal({
-                                    text: '导入的数据格式不正确！',
+                                    text: chrome.i18n.getMessage('FormatTip'),
                                     type: 'error'
                                 });
                             }
@@ -411,7 +425,7 @@ class Mocker {
                             chrome.storage.local.set({ data }, () => {
                                 this.initMockList();
                                 swal({
-                                    text: '导入成功！',
+                                    text: chrome.i18n.getMessage('ImportDone'),
                                     type: 'success',
                                     showConfirmButton: false,
                                     timer: 1200
@@ -420,7 +434,7 @@ class Mocker {
                         } catch (err) {
                             console.error(err);
                             swal({
-                                text: '导入的数据格式不正确！',
+                                text: chrome.i18n.getMessage('FormatTip'),
                                 type: 'error'
                             });
                         }
@@ -470,7 +484,7 @@ class Mocker {
             }
         };
 
-        this.$btnBack.on('click', () => {
+        $('.btn-back').on('click', () => {
             this.$editPanel.css('left', '100%');
             setTimeout(() => {
                 this.resetMockDetails();
@@ -559,6 +573,72 @@ class Mocker {
                 }
             }
         });
+    }
+
+    /**
+     * 比较版本号大小
+     * a大于b，则返回1
+     * a小于b，则返回-1
+     * a=b，则返回0
+     *
+     * @param {*} a
+     * @param {*} b
+     * @returns
+     * @memberof Mocker
+     */
+    versionCompare(a, b) {
+        if (a === b) {
+            return 0;
+        }
+
+        const a_components = a.split(".");
+        const b_components = b.split(".");
+
+        const len = Math.min(a_components.length, b_components.length);
+
+        for (let i = 0; i < len; i++) {
+            if (parseInt(a_components[i]) > parseInt(b_components[i])) {
+                return 1;
+            }
+
+            if (parseInt(a_components[i]) < parseInt(b_components[i])) {
+                return -1;
+            }
+        }
+
+        if (a_components.length > b_components.length) {
+            return 1;
+        }
+
+        if (a_components.length < b_components.length) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * 检查更新
+     *
+     * @memberof Mocker
+     */
+    checkUpdate() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        const latestVersion = data[0].tag_name.replace('v', '');
+                        if (this.versionCompare(latestVersion, this.version) === 1) {
+                            document.querySelector('#update-info').innerHTML = `<a class="text-danger" href="https://github.com/eshengsky/ServerLog/releases/tag/v${latestVersion}" target="_blank">${chrome.i18n.getMessage("checkedNew")}</a>`;
+                        }
+                    } catch (err) { }
+                }
+            }
+        };
+        xhr.open('GET', 'https://api.github.com/repos/eshengsky/ServerLog/releases', true);
+        xhr.send();
     }
 }
 

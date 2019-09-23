@@ -1,9 +1,10 @@
-export default {
+module.exports = {
     // 处理mock数据
-    handleMockData(mockResp, config, resolve, reject) {
+    handleMockData(mockResp, config, resolve, reject, isCHN) {
         const resp = {};
         resp.data = mockResp.res.body;
-        if (mockResp.res.contentType.indexOf('json') >= 0 && typeof resp.data !== 'object') {
+        const contentType = mockResp.res.contentType || 'application/json';
+        if (contentType.indexOf('json') >= 0 && typeof resp.data !== 'object') {
             try {
                 resp.data = JSON.parse(mockResp.res.body);
             } catch (err) { }
@@ -13,22 +14,22 @@ export default {
 
         resp.headers = {
             'x-mocker-data': 'true',
-            'content-type': mockResp.res.contentType
+            'content-type': contentType
         };
         if (mockResp.res.headers && typeof mockResp.res.headers === 'object') {
             Object.assign(resp.headers, mockResp.res.headers);
         }
         if (Number(mockResp.res.delay)) {
             setTimeout(() => {
-                this.mockDone(resp, config, resolve, reject);
+                this.mockDone(resp, config, resolve, reject, isCHN);
             }, Number(mockResp.res.delay));
         } else {
-            this.mockDone(resp, config, resolve, reject);
+            this.mockDone(resp, config, resolve, reject, isCHN);
         }
     },
 
-    mockDone(resp, config, resolve, reject) {
-        this.printMockDetails(resp, config);
+    mockDone(resp, config, resolve, reject, isCHN) {
+        this.printMockDetails(resp, config, isCHN);
         const validFn = config.validateStatus;
         if (validFn.call(null, resp.status)) {
             // 视为正常的响应
@@ -42,21 +43,33 @@ export default {
         }
     },
 
-    printMockDetails(resp, config) {
-        console.group('%cAxiosMocker', 'color: #8a2be2');
-        console.log('💡%c该请求返回了模拟数据，请注意在Network面板或抓包工具中无法查看真实的网络请求。模拟数据的详情如下：', 'color: #8a2be2; margin-left: 3px;');
+    printMockDetails(resp, config, isCHN) {
+        console.group('%cAxiosMocker Network', 'color: #8a2be2');
+
+        console.log(isCHN ? '💡%c该请求返回了模拟数据，请注意在Network面板或抓包工具中无法查看真实的网络请求。模拟数据的详情如下：' : '💡%cThe request returned mock data, note that the real request cannot be viewed in Network panel or capture tool. Mock data details are as follows:', 'color: #8a2be2; margin-left: 3px;');
 
         // General
         console.group('General');
         let url = config.url;
-        if (url.indexOf('//') === 0) {
-            url = `http:${url}`;
+
+        if (typeof window !== 'undefined') {
+            if (url.indexOf('//') === 0) {
+                url = `${location.protocol}${url}`;
+            }
+            if (url.indexOf('http') !== 0) {
+                url = `${location.protocol}//${location.host}${url}`;
+            }
         }
-        const urlObj = new URL(url);
-        Object.keys(config.params || {}).forEach(key => {
-            urlObj.searchParams.append(key, config.params[key]);
-        });
-        url = urlObj.href;
+
+        let urlObj;
+        try {
+            urlObj = new URL(url);
+            Object.keys(config.params || {}).forEach(key => {
+                urlObj.searchParams.append(key, config.params[key]);
+            });
+            url = urlObj.href;
+        } catch (err) { }
+
         console.log('%cRequest URL:', 'font-weight: bold;', url);
         console.log('%cRequest Method:', 'font-weight: bold;', config.method.toUpperCase());
         console.log(`%cStatus Code: %c${resp.status}`, 'font-weight: bold;', (resp.status >= 200 && resp.status < 300) ? 'color: green; font-weight: bold;' : 'color: orangered; font-weight: bold;');
@@ -77,13 +90,15 @@ export default {
         console.groupEnd();
 
         // Query String Parameters
-        const paramsArray = Array.from(urlObj.searchParams);
-        if (paramsArray.length > 0) {
-            console.groupCollapsed(`Query String Parameters (${paramsArray.length})`);
-            paramsArray.forEach(item => {
-                console.log(`%c${item[0]}:`, 'font-weight: bold;', item[1]);
-            });
-            console.groupEnd();
+        if (urlObj) {
+            const paramsArray = Array.from(urlObj.searchParams);
+            if (paramsArray.length > 0) {
+                console.groupCollapsed(`Query String Parameters (${paramsArray.length})`);
+                paramsArray.forEach(item => {
+                    console.log(`%c${item[0]}:`, 'font-weight: bold;', item[1]);
+                });
+                console.groupEnd();
+            }
         }
 
         // Request Payload

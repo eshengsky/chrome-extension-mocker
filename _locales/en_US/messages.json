@@ -1,0 +1,128 @@
+{
+    "New": {
+        "message": "New"
+    },
+    "NewTitle": {
+        "message": "Create a new mock data"
+    },
+    "Import": {
+        "message": "Import"
+    },
+    "ImportTitle": {
+        "message": "Import mock data from json file"
+    },
+    "Export": {
+        "message": "Export"
+    },
+    "ExportTitle": {
+        "message": "Export mock data to json file"
+    },
+    "Clear": {
+        "message": "Clear"
+    },
+    "ClearTitle": {
+        "message": "Delete all data"
+    },
+    "CurrVersion": {
+        "message": "Version"
+    },
+    "Back": {
+        "message": "Back"
+    },
+    "MatchReq": {
+        "message": "Match Request"
+    },
+    "ReqUrl": {
+        "message": "Url"
+    },
+    "UrlPhd": {
+        "message": "Fuzzy matching"
+    },
+    "ReqMethod": {
+        "message": "Method"
+    },
+    "All": {
+        "message": "--All--"
+    },
+    "All2": {
+        "message": "All"
+    },
+    "MockRes": {
+        "message": "Mock Response"
+    },
+    "ResStatus": {
+        "message": "Status"
+    },
+    "ResMime": {
+        "message": "Content Type"
+    },
+    "ResHeaders": {
+        "message": "Custom headers"
+    },
+    "HeadersPhd": {
+        "message": "key: value format, multiple pairs separated by newline"
+    },
+    "ResBody": {
+        "message": "Body"
+    },
+    "PlainText": {
+        "message": "Plaintext"
+    },
+    "LanMode": {
+        "message": "mode: "
+    },
+    "ResDelay": {
+        "message": "Delay"
+    },
+    "Save": {
+        "message": "Save"
+    },
+    "Saved": {
+        "message": "Saved"
+    },
+    "Active": {
+        "message": "Active"
+    },
+    "Delete": {
+        "message": "Delete"
+    },
+    "DelTip": {
+        "message": "Are you sure you want to delete?"
+    },
+    "Confirm": {
+        "message": "Confirm"
+    },
+    "Cancel": {
+        "message": "Cancel"
+    },
+    "DelDone": {
+        "message": "Deleted successfully!"
+    },
+    "ClearTip": {
+        "message": "Are you sure you want to clear all the data?"
+    },
+    "ClearDone": {
+        "message": "Clear successfully!"
+    },
+    "ImportTip": {
+        "message": "The current data will be cleared before importing!"
+    },
+    "Continue": {
+        "message": "Continue"
+    },
+    "ArrayTip": {
+        "message": "The imported data must be an array type!"
+    },
+    "FormatTip": {
+        "message": "The imported data format is incorrect!"
+    },
+    "ImportDone": {
+        "message": "Imported successfully!"
+    },
+    "UpdateInfo": {
+        "message": "No Update"
+    },
+    "checkedNew": {
+        "message": "Found new version"
+    }
+}

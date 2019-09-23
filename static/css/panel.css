@@ -1,4 +1,5 @@
 body {
+  display: none;
   font-size: 14px;
   color: #333;
 }
@@ -37,8 +38,8 @@ label {
   outline: none;
 }
 
-.btn-action:hover,
-.btn-action:focus {
+.btn-del:hover,
+.btn-del:focus {
   outline: none;
 }
 
@@ -51,6 +52,7 @@ input::-webkit-inner-spin-button {
 .list-panel {
   min-height: 100vh;
   padding: 53px 0 30px;
+  user-select: none;
 }
 
 .noscroll {
@@ -64,12 +66,12 @@ header {
   height: 50px;
   position: fixed;
   top: 0;
+  min-width: 580px;
   width: 100%;
   background: #fff;
   padding: 0 20px;
   border-bottom: 1px solid #eee;
   z-index: 999;
-  user-select: none;
   box-shadow: 0px 1px 3px 0px #ddd;
 }
 
@@ -109,8 +111,8 @@ header .header-badge span:after {
   content: " (已禁用)";
   color: orangered;
 }
-body.active header .header-badge span:after{
-  content: ""
+body.active header .header-badge span:after {
+  content: "";
 }
 .edit-panel {
   left: 100%;
@@ -124,6 +126,11 @@ body.active header .header-badge span:after{
   z-index: 1000;
   padding-top: 60px;
   width: 100%;
+  overflow-x: hidden;
+}
+
+.edit-panel header {
+  user-select: none;
 }
 
 .edit-header div {
@@ -167,6 +174,7 @@ body.active header .header-badge span:after{
   border-bottom: 1px solid #ddd;
   width: 100%;
   height: 30px;
+  user-select: none;
 }
 
 .lang-mode-wrap p,
@@ -197,15 +205,14 @@ body.active header .header-badge span:after{
 .split-title {
   position: absolute;
   left: 50%;
-  margin-left: -40px;
-  width: 80px;
-  text-align: center;
+  transform: translate(-50%, 0);
+  padding: 0 8px;
   margin-top: -12px;
   background: #fff;
   color: #666;
   -webkit-user-select: none;
   user-select: none;
-  letter-spacing: 1.6px;
+  letter-spacing: 1px;
 }
 
 .req-panel {
@@ -225,7 +232,7 @@ body.active header .header-badge span:after{
   display: flex;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin: 10px 20px;
+  margin: 10px 18px;
   padding: 10px;
   transition: all 0.3s;
 }
@@ -240,12 +247,13 @@ li.data-li.inactive {
   color: #1b9af7;
 }
 .data-li:hover .btn-del {
-  color: #ff4351;
+  color: orangered;
 }
 .div-left {
   flex: 1;
   overflow: hidden;
   margin-right: 10px;
+  cursor: alias;
 }
 
 .div-top {
@@ -259,9 +267,8 @@ li.data-li.inactive {
 }
 
 .div-right {
-  width: 120px;
+  width: 100px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -269,7 +276,6 @@ li.data-li.inactive {
 .list-method {
   font-size: 12px;
   font-weight: bold;
-  user-select: none;
   color: #808080;
   display: inline-block;
 }
@@ -307,23 +313,21 @@ li.data-li.inactive {
   list-style-type: disc;
 }
 
-.btn-action {
-  font-size: 16px;
-  height: 32px;
-  line-height: 32px;
+.btn-del {
+  margin-left: 8px;
+  font-size: 21px;
   color: #777;
   background: none;
   border: none;
   cursor: pointer;
-  transition-property: all;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  padding: 0 2px;
+  transition: all 0.3s;
+  position: relative;
+  top: 1px;
 }
 
-.btn-action:active,
-.btn-action.active,
-.btn-action.is-active {
+.btn-del:active,
+.btn-del.active,
+.btn-del.is-active {
   -webkit-box-shadow: none;
   box-shadow: none;
   text-shadow: none;
@@ -348,6 +352,15 @@ li.data-li.inactive {
   background-color: #4caf50c7;
   padding: 8px 20px;
   font-size: 14px;
+}
+
+.btn-save:hover,
+.btn-save:active:hover {
+  background-color: #439a46c7;
+}
+
+.btn-save:focus {
+  background-color: #4caf50c7;
 }
 
 .btn {
@@ -382,17 +395,18 @@ footer {
   background: #f9f9f9;
   border-top: 1px solid #ddd;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
 .footer-left {
   display: flex;
   align-items: center;
-  color: #666;
 }
 
 .footer-left a {
-  color: #666;
+  color: #333;
+  text-decoration: underline;
   margin: 0 3px;
 }
 
@@ -403,6 +417,11 @@ footer {
 .footer-left i.iconlove {
   margin: 0 3px;
   color: orangered;
+}
+
+#curr-version a {
+  color: #333;
+  text-decoration: underline;
 }
 
 .btn-upload {

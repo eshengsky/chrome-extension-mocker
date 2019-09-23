@@ -19,23 +19,24 @@
           <i class="iconfont iconm"></i> <span>Axios Mocker</span>
         </div>
         <div class="header-btns">
-          <a class="btn btn-primary" id="btn-new">
-            <i class="iconfont iconadd2"></i> <span>新建</span>
+          <a class="btn btn-primary" id="btn-new" data-title="NewTitle">
+            <i class="fas fa-plus"></i> <span data-content="New"></span>
           </a>
           <div class="btn btn-default btn-upload">
-            <div><i class="iconfont iconimport2"></i> <span>导入</span></div>
+            <div><i class="fas fa-download"></i> <span data-content="Import"></span></div>
             <input
               class="btn btn-default"
               id="btn-import"
               type="file"
               accept=".json"
+              data-title="ImportTitle"
             />
           </div>
-          <a class="btn btn-default" id="btn-export">
-            <i class="iconfont iconexport"></i> <span>导出</span>
+          <a class="btn btn-default" id="btn-export" data-title="ExportTitle">
+            <i class="fas fa-upload"></i> <span data-content="Export"></span>
           </a>
-          <a class="btn btn-danger" id="btn-clear">
-            <i class="iconfont icondelete"></i> <span>清空</span>
+          <a class="btn btn-danger" id="btn-clear" data-title="ClearTitle">
+            <i class="iconfont icondelete"></i> <span data-content="Clear"></span>
           </a>
         </div>
       </header>
@@ -54,23 +55,26 @@
           <span>by</span>
           <a href="https://github.com/eshengsky" target="_blank">Sky</a>
         </div>
+        <div class="footer-right">
+            <span data-content="CurrVersion"></span> <span id="curr-version"></span>, <span id="update-info" data-content="UpdateInfo"></span>
+        </div>
       </footer>
     </div>
     <div class="edit-panel">
       <header class="edit-header">
         <div class="btn-back">
-          <i class="fas fa-chevron-left"></i> <span>返回</span>
+          <i class="fas fa-chevron-left"></i> <span data-content="Back"></span>
         </div>
       </header>
       <div class="panel req-panel">
-        <p class="split-title" locale="match_req">匹配请求</p>
+        <p class="split-title" data-content="MatchReq"></p>
         <div class="panel-body">
           <div class="form-group" id="form-uri">
-            <label for="text-uri" locale="req_url">请求链接</label>
-            <input class="form-control" placeholder="模糊匹配" id="text-uri" />
+            <label for="text-uri" data-content="ReqUrl"></label>
+            <input class="form-control" data-placeholder="UrlPhd" id="text-uri" />
           </div>
           <div class="form-group">
-            <label locale="req_method">请求方式</label>
+            <label data-content="ReqMethod"></label>
             <div class="input-group">
               <div
                 class="btn-group selectlist"
@@ -88,7 +92,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                   <li data-value="">
-                    <a href="#" locale="all">不限</a>
+                    <a href="#" data-content="All"></a>
                   </li>
                   <li data-value="GET">
                     <a href="#">GET</a>
@@ -124,10 +128,10 @@
         </div>
       </div>
       <div class="panel res-panel">
-        <p class="split-title" locale="mock_res">模拟响应</p>
+        <p class="split-title" data-content="MockRes"></p>
         <div class="panel-body">
           <div class="form-group">
-            <label for="text-status" locale="res_code">响应状态码</label>
+            <label for="text-status" data-content="ResStatus"></label>
             <div
               class="input-group input-append dropdown combobox"
               data-initialize="combobox"
@@ -169,7 +173,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="text-mime" locale="res_mime">响应类型</label>
+            <label for="text-mime" data-content="ResMime"></label>
             <div
               class="input-group input-append dropdown combobox"
               data-initialize="combobox"
@@ -206,30 +210,30 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="text-header" locale="res_headers">自定义响应头</label>
+            <label for="text-header" data-content="ResHeaders"></label>
             <textarea
               class="form-control"
-              placeholder="key: value 格式，多个键值对用换行隔开"
+              data-placeholder="HeadersPhd"
               rows="3"
               id="text-header"
             ></textarea>
           </div>
           <div class="form-group">
-            <label for="text-body" locale="res_body">响应内容</label>
+            <label for="text-body" data-content="ResBody"></label>
             <div class="lang-mode-wrap">
               <select class="form-control input-sm" id="select-mode">
                 <option value="json">JSON</option>
                 <option value="html">HTML</option>
                 <option value="javascript">JavaScript</option>
                 <option value="css">CSS</option>
-                <option value="plaintext" locale="plaintext">纯文本</option>
+                <option value="plaintext" data-content="PlainText"></option>
               </select>
-              <p locale="lang_mode">语言模式：</p>
+              <p data-content="LanMode"></p>
             </div>
             <div id="text-body"></div>
           </div>
           <div class="form-group">
-            <label for="text-delay" locale="res_delay">响应延迟</label>
+            <label for="text-delay" data-content="ResDelay"></label>
             <div class="input-group">
               <input
                 type="number"
@@ -243,9 +247,7 @@
         </div>
       </div>
       <div class="save-wrap">
-        <button class="btn btn-success btn-save" locale="save">
-          保存修改
-        </button>
+        <button class="btn btn-success btn-save" data-content="Save"></button>
       </div>
     </div>
     <script type=""></script>
