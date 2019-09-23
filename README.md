@@ -1,7 +1,11 @@
+<a href="https://github.com/eshengsky/axios-mocker"><img src="https://github.com/eshengsky/axios-mocker/blob/master/icons/icon_128.png" height="120" align="right"></a>
+
 # axios-mocker
 
 [中文文档](https://github.com/eshengsky/axios-mocker/blob/master/README-zh.md)  
 The most convenient tool to mock requests for axios, with built-in Chrome extension support.
+
+[![Build Status](https://travis-ci.org/eshengsky/axios-mocker.svg?branch=master)](https://travis-ci.org/eshengsky/axios-mocker)
 
 ## Table of Contents
 - [Why need mock requests](#why-need-mock-requests)

@@ -1,7 +1,11 @@
+<a href="https://github.com/eshengsky/axios-mocker"><img src="https://github.com/eshengsky/axios-mocker/blob/master/icons/icon_128.png" height="120" align="right"></a>
+
 # axios-mocker
 
 [English Document](https://github.com/eshengsky/axios-mocker/blob/master/README.md)  
 axios 库最方便的请求模拟工具，内置 Chrome 扩展程序支持。
+
+[![Build Status](https://travis-ci.org/eshengsky/axios-mocker.svg?branch=master)](https://travis-ci.org/eshengsky/axios-mocker)
 
 ## 目录
 - [为什么需要模拟请求](#为什么需要模拟请求)
