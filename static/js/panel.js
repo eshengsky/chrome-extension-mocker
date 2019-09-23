@@ -631,13 +631,13 @@ class Mocker {
                         const data = JSON.parse(xhr.responseText);
                         const latestVersion = data[0].tag_name.replace('v', '');
                         if (this.versionCompare(latestVersion, this.version) === 1) {
-                            document.querySelector('#update-info').innerHTML = `<a class="text-danger" href="https://github.com/eshengsky/ServerLog/releases/tag/v${latestVersion}" target="_blank">${chrome.i18n.getMessage("checkedNew")}</a>`;
+                            document.querySelector('#update-info').innerHTML = `<a class="text-danger" href="https://github.com/eshengsky/axios-mocker/releases/tag/v${latestVersion}" target="_blank">${chrome.i18n.getMessage("checkedNew")}</a>`;
                         }
                     } catch (err) { }
                 }
             }
         };
-        xhr.open('GET', 'https://api.github.com/repos/eshengsky/ServerLog/releases', true);
+        xhr.open('GET', 'https://api.github.com/repos/eshengsky/axios-mocker/releases', true);
         xhr.send();
     }
 }
