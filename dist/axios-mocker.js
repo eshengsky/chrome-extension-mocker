@@ -377,6 +377,8 @@
 	        if (mockResp.res.headers && _typeof(mockResp.res.headers) === 'object') {
 	            Object.assign(resp.headers, mockResp.res.headers);
 	        }
+	        resp.config = config;
+	        resp.request = null;
 	        if (Number(mockResp.res.delay)) {
 	            setTimeout(function () {
 	                _this.mockDone(resp, config, resolve, reject, isCHN);
@@ -395,6 +397,7 @@
 	            // 异常响应，自定义一个错误对象，和axios尽量一致
 	            var customErr = new Error('Request failed with status code ' + resp.status);
 	            customErr.response = resp;
+	            customErr.request = null;
 	            customErr.config = config;
 	            reject(customErr);
 	        }

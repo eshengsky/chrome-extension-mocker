@@ -1,7 +1,7 @@
 {
   "name": "AxiosMocker",
   "description": "axios mocker extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "background": {
     "scripts": ["background.js"]
   },

@@ -19,6 +19,8 @@ module.exports = {
         if (mockResp.res.headers && typeof mockResp.res.headers === 'object') {
             Object.assign(resp.headers, mockResp.res.headers);
         }
+        resp.config = config;
+        resp.request = null;
         if (Number(mockResp.res.delay)) {
             setTimeout(() => {
                 this.mockDone(resp, config, resolve, reject, isCHN);
@@ -38,6 +40,7 @@ module.exports = {
             // 异常响应，自定义一个错误对象，和axios尽量一致
             const customErr = new Error(`Request failed with status code ${resp.status}`);
             customErr.response = resp;
+            customErr.request = null;
             customErr.config = config;
             reject(customErr);
         }
