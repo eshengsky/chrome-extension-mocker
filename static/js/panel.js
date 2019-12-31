@@ -226,7 +226,7 @@ class Mocker {
     resetMockDetails() {
         this.uid = '';
         this.$textUri.val('');
-        this.$selectMethod.selectlist('selectByValue', 'GET');
+        this.$selectMethod.selectlist('selectByValue', '');
         this.$selectStatus.combobox('selectByValue', '200');
         this.$selectMime.combobox('selectByValue', 'application/json');
         this.$textHeader.val('');
@@ -414,7 +414,7 @@ class Mocker {
                                 item.active = item.active !== false;
                                 item.comments = item.comments || "";
                                 item.req.url = item.req.url.trim();
-                                item.req.method = item.req.method ? item.req.method.toUpperCase() : 'GET';
+                                item.req.method = item.req.method ? item.req.method.toUpperCase() : '';
                                 item.res.contentType = item.res.contentType || 'application/json';
                                 item.res.headers = item.res.headers || {};
                                 item.res.editorMode = item.res.editorMode || 'json';
