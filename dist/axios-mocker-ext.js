@@ -165,12 +165,28 @@
 
 	        // Request Payload
 	        if (config.data) {
-	            var payload = {};
+	            var payload = void 0;
+	            var headerName = void 0;
 	            try {
-	                payload = JSON.parse(config.data);
+	                if (typeof config.data === 'string') {
+	                    // Form Data
+	                    headerName = 'Form Data';
+	                    payload = JSON.parse('{"' + decodeURI(config.data).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+	                    payload.__proto__ = null;
+	                } else {
+	                    // Request Payload
+	                    headerName = 'Request Payload';
+	                    payload = JSON.parse(config.data);
+	                    payload.__proto__ = null;
+	                }
 	            } catch (err) {}
-	            console.groupCollapsed('Request Payload');
-	            console.log(payload);
+	            console.groupCollapsed(headerName);
+	            if (payload) {
+	                console.log(payload);
+	            } else {
+	                // Parse Error print
+	                console.log('%cParse Error!', 'color: #888; font-style: italic;');
+	            }
 	            console.groupEnd();
 	        }
 
@@ -180,6 +196,9 @@
 	        try {
 	            data = JSON.parse(data);
 	        } catch (err) {}
+	        if (data && data.__proto__) {
+	            data.__proto__ = null;
+	        }
 	        console.log(data);
 	        console.groupEnd();
 	        console.groupEnd();

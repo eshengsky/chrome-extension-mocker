@@ -63,12 +63,15 @@
       }
 
       axios
-        .get(
-          "/api/getUser",
+        .post(
+          "/api/getUser?version=1.0",
+          'a=1&b=哈哈',
           {
-            params: {  },
+            params: { 
+              id: 1
+            },
             headers: {
-              // "custom-header": "something"
+              "custom-header": "something"
             }
           }
         )
