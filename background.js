@@ -22,5 +22,6 @@ chrome.runtime.onMessageExternal.addListener(
             });
             sendResponse(findOne);
         });
+        return true;
     });
     

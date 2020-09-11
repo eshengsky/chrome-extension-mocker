@@ -1,6 +1,6 @@
 {
   "name": "axios-mocker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The most convenient tool to mock requests for axios, with built-in Chrome extension support.",
   "main": "src/axios-mocker.js",
   "devDependencies": {
