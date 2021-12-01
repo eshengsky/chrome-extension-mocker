@@ -1,4 +1,4 @@
-// import mockjs from 'mockjs';
+import mockjs from 'mockjs';
 
 const storageCache = {
   mockData: [],
@@ -60,14 +60,14 @@ chrome.webRequest.onBeforeRequest.addListener(
         console.error('Prase requestBody failed!', e);
       }
 
-      const { responseText } = mockData;
-      // try {
-      //   if (mockData.contentType.indexOf('application/json') >= 0) {
-      //     responseText = JSON.stringify(mockjs.mock(JSON.parse(responseText)));
-      //   }
-      // } catch (err) {
-      //   console.error('Error when use mockjs:', err);
-      // }
+      let { responseText } = mockData;
+      try {
+        if (mockData.contentType.indexOf('application/json') >= 0) {
+          responseText = JSON.stringify(mockjs.mock(JSON.parse(responseText)));
+        }
+      } catch (err) {
+        console.error('Error when use mockjs:', err);
+      }
       mockData.responseText = responseText;
 
       const data = {
