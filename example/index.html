@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>Axios Mocker Demo with Chrome extension</title>
+  <style>
+    body {
+      margin: 20px;
+    }
+
+    header {
+      font-size: 24px;
+      display: block;
+    }
+
+    .desc {
+      font-size: 14px;
+    }
+
+    .panel {
+      white-space: pre;
+      background: #efefef;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      word-break: break-all;
+      font-size: 14px;
+      height: 250px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>Chrome extension mocker examples</header>
+    <button onclick="example1()">example1</button>
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    function example1() {
+      axios
+      .post(
+        "http://mocker-examples.com/example1?a=1",
+        {
+          test: 123,
+          name: '你好'
+        },
+        {
+          params: {
+            b: 2
+          },
+          headers: {
+            "content-type": "application/json",
+            "custom-header": "something"
+          }
+        }
+      )
+      .then(function (resp) {
+        console.log('Response:', resp);
+      })
+      .catch(function (err) {
+        console.error('Error:', err);
+      });
+    }
+    
+  </script>
+</body>
+
+</html>
