@@ -1,4 +1,4 @@
-<a href="https://github.com/eshengsky/chrome-extension-mocker"><img src="https://github.com/eshengsky/chrome-extension-mocker/blob/master/src/icons/icon_128.png" height="120" align="right"></a>
+<a href="https://github.com/eshengsky/chrome-extension-mocker"><img src="https://github.com/eshengsky/chrome-extension-mocker/blob/master/public/icons/icon_128.png" height="120" align="right"></a>
 
 # chrome-extension-mocker
 
@@ -12,28 +12,36 @@ If you want to use v1 version, switch to [axios-mocker](https://github.com/eshen
 * Many times, the web service may return various types of responses, and developers and testers need to verify if it is working correctly under different returns, for example, when web service status code is 500, the page can be displayed as expected. Creating the data through normal operations can sometimes be particularly cumbersome or difficult, while using mock requests is convenient, and boundary testing can be done efficiently if you want to return what you want. 
 * It is the base of TDD (test-driven development) and automated testing.
 
-## Quick Start
+## Preview
+![](https://github.com/eshengsky/chrome-extension-mocker/blob/master/public/preview1.png)
+![](https://github.com/eshengsky/chrome-extension-mocker/blob/master/public/preview2.png)
 
-#### Installation
+## Download
+
+Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/xxx).
+
+Or, download and install as following:
 
 1. Download the latest package in [Release](https://github.com/eshengsky/chrome-extension-mocker/releases/latest) page.
 2. Open Chrome, enter `chrome://extensions/` in the address bar to enter the Chrome extension page, and check the `Developer mode`.
-3. Unzipped the package file into a folder and dragged to the page, and click on the `Add Extension` button.
-4. Press `Ctrl+Shift+I` to open the developer tool and you'll find one more `Mocker` panel.
+3. Drag the downloaded zip file to the page, and click on the `Add Extension` button.
 
-#### Usage
+## Usage
 
 In Chrome browser, press `Ctrl+Shift+I` or `⌘+⌥+I` to open dev tools, go to `Mocker` panel.
 
-#### Development
+Click the New button, and enter the mock data you want.
+In Match Request panel, set which requests need to match, and in Mock Response panel, set the simulate response you want to return.
 
-* Run dev server
+Note that if one request is matched, the original request will be redirected into a data uri, you can see details in Console panel.
+
+## Development
 
 ```bash
 $ yarn serve
 ```
 
-* Build dist & artifacts
+## Package
 
 ```bash
 $ yarn build
@@ -41,13 +49,12 @@ $ yarn build
 
 ## Example
 
-See `/example/` folder.
-
-## Package
-
 ```bash
-$ yarn build
+$ cd example
+$ node server.js
 ```
+
+Visit http://localhost:8369/example/index.html.
 
 ## Licence
 
