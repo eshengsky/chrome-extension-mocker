@@ -1,39 +1,40 @@
-import Confirm from './Confirm.vue'
+/* eslint-disable no-param-reassign */
+import Confirm from './Confirm.vue';
 
-function Install (Vue, options = {}) {
-  const property = options.property || '$confirm'
-  delete options.property
-  const vuetify = options.vuetify
-  delete options.vuetify
+function Install(Vue, options = {}) {
+  const property = options.property || '$confirm';
+  delete options.property;
+  const { vuetify } = options;
+  delete options.vuetify;
   if (!vuetify) {
-    console.warn('Module vuetify-confirm needs vuetify instance. Use Vue.use(VuetifyConfirm, { vuetify })')
+    console.warn('Module vuetify-confirm needs vuetify instance. Use Vue.use(VuetifyConfirm, { vuetify })');
   }
-  const Ctor = Vue.extend(Object.assign({ vuetify }, Confirm))
-  function createDialogCmp (options) {
-    const container = document.querySelector('[data-app=true]') || document.body
-    return new Promise(resolve => {
-      const cmp = new Ctor(Object.assign({}, {
-        propsData: Object.assign({}, Vue.prototype[property].options, options),
+  const Ctor = Vue.extend({ vuetify, ...Confirm });
+  function createDialogCmp(opt) {
+    const container = document.querySelector('[data-app=true]') || document.body;
+    return new Promise((resolve) => {
+      const cmp = new Ctor({
+        propsData: { ...Vue.prototype[property].options, ...opt },
         destroyed: () => {
-          container.removeChild(cmp.$el)
-          resolve(cmp.value)
-        }
-      }))
-      container.appendChild(cmp.$mount().$el)
-    })
-  }
-  
-  function show (message, options = {}) {
-    options.message = message
-    return createDialogCmp(options)
+          container.removeChild(cmp.$el);
+          resolve(cmp.value);
+        },
+      });
+      container.appendChild(cmp.$mount().$el);
+    });
   }
 
-  Vue.prototype[property] = show
-  Vue.prototype[property].options = options || {}
+  function show(message, opt = {}) {
+    opt.message = message;
+    return createDialogCmp(opt);
+  }
+
+  Vue.prototype[property] = show;
+  Vue.prototype[property].options = options || {};
 }
 
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(Install)
+  window.Vue.use(Install);
 }
 
-export default Install
+export default Install;

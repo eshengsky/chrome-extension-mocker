@@ -5,9 +5,10 @@
         <v-app-bar
           fixed
           color="white"
+          style="box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%);"
         >
-          <v-toolbar-title>
-            Mocker
+          <v-toolbar-title class="d-flex align-center">
+            <img src="icons/icon_128.png" class="logo"><span class="mocker">Mocker</span>
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon color="error" v-bind="attrs" v-on="on" @click="turnoff">
@@ -34,10 +35,23 @@
             </template>
             <span>Import</span>
           </v-tooltip>
-          <input type="file" ref="inputFile" accept=".json" style="display:none" @change="onChangeFile"/>
+          <input
+            type="file"
+            ref="inputFile"
+            accept=".json"
+            style="display:none"
+            @change="onChangeFile"
+          />
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn icon color="primary" v-bind="attrs" v-on="on" @click="exportData">
+              <v-btn
+                icon
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+                :disabled="!list.length"
+                @click="exportData"
+              >
                 <v-icon>mdi-export</v-icon>
               </v-btn>
             </template>
@@ -45,17 +59,24 @@
           </v-tooltip>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn icon color="error" v-bind="attrs" v-on="on" @click="delAll">
-                <v-icon>mdi-trash-can</v-icon>
+              <v-btn
+                icon
+                color="error"
+                v-bind="attrs"
+                v-on="on"
+                :disabled="!list.length"
+                @click="delAll"
+              >
+                <v-icon>mdi-delete-forever</v-icon>
               </v-btn>
             </template>
             <span>Delete all</span>
           </v-tooltip>
         </v-app-bar>
         <div class="body px-3">
-          <template v-if="list.length > 0">
+          <template v-if="list.length">
             <v-card
-              class="d-flex mb-3 pa-3"
+              class="d-flex mb-3 pa-3 list-item"
               :class="{ muted: !item.active }"
               outlined
               v-for="item in list"
@@ -73,9 +94,16 @@
                   </template>
                 </div>
                 <div class="line-2">
-                  <span class="status" :class="(item.status >= 200 && item.status < 400) ? 'success--text' : 'error--text'">{{ item.status }}</span>
+                  <span
+                    class="status"
+                    :class="(item.status >= 200 && item.status < 400)
+                      ? 'success--text'
+                      : 'error--text'"
+                  >{{ item.status }}</span>
                   <span>{{ item.contentType }}</span>
-                  <span v-if="item.delay"><v-icon>mdi-clock-outline</v-icon>{{ item.delay }}ms</span>
+                  <span v-if="item.delay">
+                    <v-icon>mdi-clock-outline</v-icon>{{ item.delay }}ms
+                  </span>
                 </div>
               </div>
               <div class="d-flex align-center flex-grow-0 flex-shrink-0">
@@ -93,7 +121,7 @@
                       v-on="on"
                       @click.native.stop="del(item.id)"
                     >
-                      <v-icon>mdi-trash-can-outline</v-icon>
+                      <v-icon>mdi-delete-forever-outline</v-icon>
                     </v-btn>
                   </template>
                   <span>Delete</span>
@@ -108,7 +136,17 @@
             </v-btn>
           </div>
         </div>
-        <div class="footer"></div>
+        <div class="footer d-flex justify-space-between px-3">
+          <div class="code-by d-flex align-center">
+            <a href="https://github.com/eshengsky/chrome-extension-mocker" target="_blank">Code</a
+            ><span>with</span
+            ><v-icon color="red" style="font-size: 18px;" title="love">mdi-heart</v-icon
+            ><span>by</span><a href="https://github.com/eshengsky" target="_blank">Sky</a>
+          </div>
+          <div class="d-flex align-center">
+            Version {{ version }}
+          </div>
+        </div>
       </div>
       <v-dialog v-model="dialog" fullscreen>
         <div class="d-flex flex-column" style="height: 100%">
@@ -193,6 +231,7 @@
                 <label>Response Headers</label>
                 <v-textarea
                   v-model="details.responseHeaders"
+                  :rows="4"
                   outlined
                   placeholder="key: value format, support multi pairs with linebreak"
                 ></v-textarea>
@@ -238,6 +277,13 @@
                   ></v-text-field>
               </div>
             </v-card>
+            <label class="mt-6">Remark</label>
+            <v-textarea
+              :rows="3"
+              outlined
+              v-model="details.remark"
+              placeholder="Write something here..."
+            ></v-textarea>
           </div>
           <v-app-bar
             fixed
@@ -247,7 +293,13 @@
             class="flex-grow-0 flex-shrink-0"
             style="top: auto !important;"
           >
-            <v-btn color="primary" width="126" depressed class="mr-3" @click="save">{{ saveText }}</v-btn>
+            <v-btn
+              color="primary"
+              width="126"
+              depressed
+              class="mr-3"
+              @click="save"
+            >{{ saveText }}</v-btn>
             <v-btn depressed @click="close">CLOSE</v-btn>
           </v-app-bar>
         </div>
@@ -354,20 +406,21 @@ export default {
       showAlert: false,
       alertMsg: '',
       saveText: '',
+      version: chrome.runtime.getManifest().version,
     };
   },
   computed: {
     matchTips() {
       let tip = 'When request url ';
       if (this.details.reqType === 2) {
-        tip += `match regular expression: /${this.details.reqUrl}/gi, `;
+        tip += `matches regular expression: /${this.details.reqUrl}/gi, `;
       } else {
-        tip += `contains string: ${this.details.reqUrl}, `;
+        tip += `contains the string: ${this.details.reqUrl}, `;
       }
       if (this.details.reqMethod) {
         tip += `and request method is ${this.details.reqMethod}, `;
       }
-      tip += 'will send mock response as below.';
+      tip += 'the following mock response is returned.';
       return tip;
     },
   },
@@ -437,6 +490,7 @@ export default {
   }]
 }`,
         delay: 0,
+        remark: '',
         active: true,
       };
       this.dialog = true;
@@ -631,14 +685,26 @@ export default {
 * {
   text-transform: none !important;
 }
+.logo {
+  height: 32px;
+  margin-right: 6px;
+}
+.mocker {
+  user-select: none;
+}
 .v-card--link:before {
   background: transparent !important;
+}
+.v-tooltip__content {
+  font-size: 12px;
+  background: #333;
 }
 .fixed-center {
   position: fixed;
   top: 50%;
   left: 50%;
   text-align: center;
+  user-select: none;
   opacity: .8;
   > div {
     margin-bottom: 4px;
@@ -653,6 +719,21 @@ export default {
   .muted {
     opacity: .6;
   }
+}
+.list-item {
+  box-shadow: none;
+  transition: box-shadow .3s ease;
+  &:hover {
+    box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
+  }
+}
+label {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 13px;
+  margin-bottom: 8px;
+  user-select: none;
+  opacity: .8;
 }
 .left {
   overflow: hidden;
@@ -717,14 +798,6 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     user-select: none;
-  }
-  label {
-    display: inline-block;
-    font-weight: 500;
-    font-size: 13px;
-    margin-bottom: 8px;
-    user-select: none;
-    opacity: .8;
   }
   .req-type {
     width: 200px;
@@ -808,5 +881,23 @@ export default {
   background: #fff;
   z-index: 999;
   user-select: none;
+}
+.footer {
+  height: 40px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 13px;
+  box-shadow: rgb(0 0 0 / 20%) 0px -2px 4px -1px;
+  opacity: .8;
+  .code-by {
+    & > * {
+      margin-right: 2px;
+    }
+    a {
+      color: inherit;
+    }
+  }
 }
 </style>

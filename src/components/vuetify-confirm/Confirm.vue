@@ -1,5 +1,12 @@
 <template>
-  <v-dialog eager @input="change" value="true" :max-width="width" :persistent="persistent" @keydown.esc="choose(false)">
+  <v-dialog
+    eager
+    @input="change"
+    value="true"
+    :max-width="width"
+    :persistent="persistent"
+    @keydown.esc="choose(false)"
+  >
     <v-card tile>
       <v-toolbar v-if="Boolean(title)" dark :color="color" dense flat>
         <v-icon v-if="Boolean(icon)" left>{{ icon }}</v-icon>
@@ -32,7 +39,10 @@
 </template>
 
 <script>
-import { VCard, VCardActions, VCardText, VDialog, VIcon, VToolbar, VToolbarTitle, VSpacer, VBtn } from 'vuetify/lib'
+import {
+  VCard, VCardActions, VCardText, VDialog, VIcon, VToolbar, VToolbarTitle, VSpacer, VBtn,
+} from 'vuetify/lib';
+
 export default {
   components: {
     VCard,
@@ -43,82 +53,82 @@ export default {
     VToolbar,
     VToolbarTitle,
     VSpacer,
-    VBtn
+    VBtn,
   },
   props: {
     buttonTrueText: {
       type: String,
-      default: 'Yes'
+      default: 'Yes',
     },
     buttonFalseText: {
       type: String,
-      default: 'No'
+      default: 'No',
     },
     buttonTrueColor: {
       type: String,
-      default: 'primary'
+      default: 'primary',
     },
     buttonFalseColor: {
       type: String,
-      default: 'grey'
+      default: 'grey',
     },
     buttonFalseFlat: {
       type: Boolean,
-      default: true
+      default: true,
     },
     buttonTrueFlat: {
       type: Boolean,
-      default: true
+      default: true,
     },
     color: {
       type: String,
-      default: 'warning'
+      default: 'warning',
     },
     icon: {
       type: String,
-      default () {
-        return this.$vuetify.icons.values.warning
-      }
+      default() {
+        return this.$vuetify.icons.values.warning;
+      },
     },
     message: {
       type: String,
-      required: true
+      required: true,
     },
     persistent: Boolean,
     title: {
-      type: String
+      type: String,
     },
     width: {
       type: Number,
-      default: 450
-    }
+      default: 450,
+    },
   },
-  data () {
+  data() {
     return {
-      value: false
-    }
+      value: false,
+    };
   },
-  mounted () {
-    document.addEventListener('keyup', this.onEnterPressed)
+  mounted() {
+    document.addEventListener('keyup', this.onEnterPressed);
   },
-  destroyed () {
-    document.removeEventListener('keyup', this.onEnterPressed)
+  destroyed() {
+    document.removeEventListener('keyup', this.onEnterPressed);
   },
   methods: {
-    onEnterPressed (e) {
+    onEnterPressed(e) {
       if (e.keyCode === 13) {
-        e.stopPropagation()
-        this.choose(true)
+        e.stopPropagation();
+        this.choose(true);
       }
     },
-    choose (value) {
-      this.$emit('result', value)
-      this.value = value
-      this.$destroy()
+    choose(value) {
+      this.$emit('result', value);
+      this.value = value;
+      this.$destroy();
     },
-    change (res) {
-      this.$destroy()
-    }
-  }
-}
+    change() {
+      this.$destroy();
+    },
+  },
+};
 </script>

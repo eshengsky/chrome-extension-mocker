@@ -6,25 +6,25 @@ export default {
     original: String,
     value: {
       type: String,
-      required: true
+      required: true,
     },
     theme: {
       type: String,
-      default: 'vs'
+      default: 'vs',
     },
     language: String,
     options: Object,
     amdRequire: {
-      type: Function
+      type: Function,
     },
     diffEditor: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   model: {
-    event: 'change'
+    event: 'change',
   },
 
   watch: {
@@ -32,144 +32,145 @@ export default {
       deep: true,
       handler(options) {
         if (this.editor) {
-          const editor = this.getModifiedEditor()
-          editor.updateOptions(options)
+          const editor = this.getModifiedEditor();
+          editor.updateOptions(options);
         }
-      }
+      },
     },
 
     value(newValue) {
       if (this.editor) {
-        const editor = this.getModifiedEditor()
+        const editor = this.getModifiedEditor();
         if (newValue !== editor.getValue()) {
-          editor.setValue(newValue)
+          editor.setValue(newValue);
         }
       }
     },
 
     original(newValue) {
       if (this.editor && this.diffEditor) {
-        const editor = this.getOriginalEditor()
+        const editor = this.getOriginalEditor();
         if (newValue !== editor.getValue()) {
-          editor.setValue(newValue)
+          editor.setValue(newValue);
         }
       }
     },
 
     language(newVal) {
       if (this.editor) {
-        const editor = this.getModifiedEditor()
-        this.monaco.editor.setModelLanguage(editor.getModel(), newVal)
+        const editor = this.getModifiedEditor();
+        this.monaco.editor.setModelLanguage(editor.getModel(), newVal);
       }
     },
 
     theme(newVal) {
       if (this.editor) {
-        this.monaco.editor.setTheme(newVal)
+        this.monaco.editor.setTheme(newVal);
       }
-    }
+    },
   },
 
   mounted() {
     if (this.amdRequire) {
       this.amdRequire(['vs/editor/editor.main'], () => {
-        this.monaco = window.monaco
+        this.monaco = window.monaco;
         this.$nextTick(() => {
-          this.initMonaco(window.monaco)
-        })
-      })
+          this.initMonaco(window.monaco);
+        });
+      });
     } else {
       // ESM format so it can't be resolved by commonjs `require` in eslint
       // eslint-disable-next-line import/no-unresolved
-      const monaco = require('monaco-editor')
-      this.monaco = monaco
+      // eslint-disable-next-line global-require
+      const monaco = require('monaco-editor');
+      this.monaco = monaco;
       this.$nextTick(() => {
-        this.initMonaco(monaco)
-      })
+        this.initMonaco(monaco);
+      });
     }
   },
 
   beforeDestroy() {
-    this.editor && this.editor.dispose()
+    if (this.editor) {
+      this.editor.dispose();
+    }
   },
 
   methods: {
     initMonaco(monaco) {
-      this.$emit('editorWillMount', this.monaco)
+      this.$emit('editorWillMount', this.monaco);
 
-      const options = Object.assign(
-        {
-          value: this.value,
-          theme: this.theme,
-          language: this.language
-        },
-        this.options
-      )
+      const options = {
+        value: this.value,
+        theme: this.theme,
+        language: this.language,
+        ...this.options,
+      };
 
       if (this.diffEditor) {
-        this.editor = monaco.editor.createDiffEditor(this.$el, options)
+        this.editor = monaco.editor.createDiffEditor(this.$el, options);
         const originalModel = monaco.editor.createModel(
           this.original,
-          this.language
-        )
+          this.language,
+        );
         const modifiedModel = monaco.editor.createModel(
           this.value,
-          this.language
-        )
+          this.language,
+        );
         this.editor.setModel({
           original: originalModel,
-          modified: modifiedModel
-        })
+          modified: modifiedModel,
+        });
       } else {
-        this.editor = monaco.editor.create(this.$el, options)
+        this.editor = monaco.editor.create(this.$el, options);
       }
 
       // @event `change`
-      const editor = this.getModifiedEditor()
-      editor.onDidChangeModelContent(event => {
-        const value = editor.getValue()
+      const editor = this.getModifiedEditor();
+      editor.onDidChangeModelContent((event) => {
+        const value = editor.getValue();
         if (this.value !== value) {
-          this.$emit('change', value, event)
+          this.$emit('change', value, event);
         }
-      })
+      });
 
       // @event `focus`
       editor.onDidFocusEditorText(() => {
-        this.$emit('focus')
-      })
+        this.$emit('focus');
+      });
 
       // @event `blur`
       editor.onDidBlurEditorText(() => {
-        this.$emit('blur')
-      })
+        this.$emit('blur');
+      });
 
-      this.$emit('editorDidMount', this.editor)
+      this.$emit('editorDidMount', this.editor);
     },
 
     /** @deprecated */
     getMonaco() {
-      return this.editor
+      return this.editor;
     },
 
     getEditor() {
-      return this.editor
+      return this.editor;
     },
 
     getModifiedEditor() {
-      return this.diffEditor ? this.editor.getModifiedEditor() : this.editor
+      return this.diffEditor ? this.editor.getModifiedEditor() : this.editor;
     },
 
     getOriginalEditor() {
-      return this.diffEditor ? this.editor.getOriginalEditor() : this.editor
+      return this.diffEditor ? this.editor.getOriginalEditor() : this.editor;
     },
 
     focus() {
-      this.editor.focus()
-    }
+      this.editor.focus();
+    },
   },
 
   render(h) {
-    return h('div')
-  }
-}
+    return h('div');
+  },
+};
 </script>
