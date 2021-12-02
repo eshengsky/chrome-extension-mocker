@@ -805,8 +805,7 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 15px;
-  background: rgb(33 33 33 / 10%);
-  backdrop-filter: blur(6px);
+  background: #fff;
   z-index: 999;
   user-select: none;
 }

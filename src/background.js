@@ -1,4 +1,4 @@
-import mockjs from 'mockjs';
+import mockjs from 'better-mock';
 
 const storageCache = {
   mockData: [],

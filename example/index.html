@@ -35,35 +35,48 @@
   <div class="container">
     <header>Chrome extension mocker examples</header>
     <button onclick="example1()">example1</button>
+    <button onclick="example2()">example2</button>
   </div>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
     function example1() {
-      axios
-      .post(
-        "http://mocker-examples.com/example1?a=1",
-        {
-          test: 123,
-          name: '你好'
-        },
-        {
-          params: {
-            b: 2
-          },
-          headers: {
-            "content-type": "application/json",
-            "custom-header": "something"
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'http://example.com/example1');
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 400) {
+            let resp = xhr.responseText;
+            if (xhr.getResponseHeader('content-type').indexOf('application/json') >= 0) {
+              resp = JSON.parse(xhr.responseText);
+            }
+            console.log('Request success! Response:', resp);
+          } else {
+            console.error('Request failed! Status:', xhr.status);
           }
         }
-      )
-      .then(function (resp) {
-        console.log('Response:', resp);
-      })
-      .catch(function (err) {
-        console.error('Error:', err);
+      };
+      xhr.send();
+    }
+    function example2() {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://example.com/example2');
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 400) {
+          let resp = xhr.responseText;
+          if (xhr.getResponseHeader('content-type').indexOf('application/json') >= 0) {
+            resp = JSON.parse(xhr.responseText);
+          }
+          console.log('Request success! Response:', resp);
+        } else {
+          console.error('Request failed! Status:', xhr.status);
+        }
+      };
+      xhr.onerror = (err) => {
+        console.error('Request failed! Error:', err);
+      }
+      xhr.send({
+        test: 123
       });
     }
-    
   </script>
 </body>
 
