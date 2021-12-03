@@ -5,13 +5,11 @@
   "description": "A mock tool based on Chrome extension, no need to change any code, support dynamic mock data.",
   "default_locale": "en",
   "permissions": [
-    "tabs",
     "storage",
     "webRequest",
     "webRequestBlocking",
     "http://*/",
     "https://*/",
-    "activeTab",
     "<all_urls>",
     "*://*/*"
   ],
