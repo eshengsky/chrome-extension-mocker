@@ -18,7 +18,7 @@ If you want to use v1 version, switch to [axios-mocker](https://github.com/eshen
 
 ## Download
 
-Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/xxx).
+Download from [Chrome Web Store](https://chrome.google.com/webstore/detail/kfmkpfnmkjgcalngkpkjpjngjkfkjecl).
 
 Or, download and install as following:
 
